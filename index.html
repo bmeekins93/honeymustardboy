@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kissing Kids</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="game" aria-label="Kissing Kids game area">
+    <!-- HUD -->
+    <div id="hud">
+      <div class="hud-item"><strong>Time</strong> <span id="timer">02:00</span></div>
+      <div class="hud-item"><strong>Score</strong> <span id="score">0</span></div>
+      <div class="hud-item"><strong>Best</strong> <span id="bestScore">0</span></div>
+      <div class="hud-item streak"><strong>Streak</strong> <span id="streakLabel">x1</span></div>
+
+      <!-- K.I.S.R.A.Y. HUD -->
+      <div id="kisrayHud" class="hud-item kisray">
+        <strong>K.I.S.R.A.Y.</strong>
+        <div id="kisrayBar" class="bar">
+          <div id="kisrayFill" class="fill"></div>
+          <div id="kisrayReadyMark" class="ready hidden">R</div>
+        </div>
+        <div id="kisrayStatus" class="status tiny">Offline</div>
+      </div>
+
+      <button id="muteBtn" title="Toggle Sound" aria-pressed="false">🔊</button>
+    </div>
+
+    <!-- GAMEPLAY background video (muted loop, shown only during play) -->
+    <video id="gameVideo" class="video-bg hidden" loop muted playsinline preload="metadata">
+      <source src="assets/game_bg.mp4" type="video/mp4" />
+    </video>
+
+    <!-- CRT / scanline overlay -->
+    <div id="crtOverlay" class="crt-overlay"></div>
+
+    <!-- Patrick in the center -->
+    <img id="patrick"
+         src="assets/patrick_normal.png"
+         alt="Patrick"
+         draggable="false" />
+
+    <!-- START SCREEN -->
+    <div id="startScreen" class="screen">
+      <video id="introVideo" class="video-bg" autoplay muted loop playsinline preload="metadata" poster="assets/intro_poster.jpg">
+        <source src="assets/intro_bg.webm" type="video/webm" />
+        <source src="assets/intro_bg.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="video-overlay"></div>
+      <div class="screen-content">
+        <h1>Kissing Kids</h1>
+        <p>Drag crying babies onto Patrick to calm them.<br/>Survive for 2 minutes.</p>
+
+        <div class="start-actions">
+          <button id="startBtn">Start</button>
+          <button id="settingsBtn" class="subtle">Settings</button>
+        </div>
+
+        <!-- SETTINGS PANEL -->
+        <div id="settingsPanel" class="settings hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+          <h2 id="settingsTitle">Settings</h2>
+          <div class="setting">
+            <label for="musicVol"><span>Music volume</span>
+              <input id="musicVol" type="range" min="0" max="100" step="1">
+              <span id="musicVolLabel" class="value">100%</span>
+            </label>
+            <div class="hint tiny">Affects menu & in‑game music (in‑game is scaled lower for readability).</div>
+          </div>
+          <div class="setting">
+            <label for="sfxVol"><span>SFX volume</span>
+              <input id="sfxVol" type="range" min="0" max="100" step="1">
+              <span id="sfxVolLabel" class="value">100%</span>
+            </label>
+            <div class="hint tiny">Affects crying babies and kiss sounds.</div>
+          </div>
+          <button id="closeSettings" class="close">Close</button>
+        </div>
+
+        <p class="tiny">Title is for shock value. No weirdness here — just presidential baby‑kissing.</p>
+      </div>
+    </div>
+
+    <!-- SIMPLE END SCREEN (lose only) -->
+    <div id="endScreen" class="screen hidden">
+      <h2 id="endMessage">Game Over</h2>
+      <p class="sub">Score: <span id="finalScore">0</span></p>
+      <p class="tiny">Refresh the page to try again.</p>
+    </div>
+
+    <!-- WIN: Congrats overlay -->
+    <div id="congratsScreen" class="screen hidden">
+      <h2>Congrats, Baby-Soother-in-Chief!</h2>
+      <p>You kissed faster than a campaign bus schedule. The nation naps in peace.</p>
+      <p class="tiny">Stand by for press…</p>
+    </div>
+
+    <!-- Cheering crowd image (shows after win, hides when cops video starts) -->
+    <img id="crowdImage" class="crowd hidden" src="assets/cheering_crowd.png" alt="Cheering crowd cheering your questionable PR move" />
+
+    <!-- Final scene: cops video + arrest text -->
+    <video id="copsVideo" class="video-bg hidden" loop muted playsinline preload="metadata">
+      <source src="assets/cops_lights.mp4" type="video/mp4" />
+    </video>
+    <div id="arrestText" class="arrest-text hidden">
+      Patrick, you’re under arrest. You can’t just go around kissing all those babies.
+    </div>
+
+    <!-- K.I.S.R.A.Y. beam + online toast -->
+    <div id="kisrayOnline" class="kisray-online hidden">K.I.S.R.A.Y. online</div>
+    <div id="kisrayBeam" class="kisray-beam hidden" aria-hidden="true"></div>
+  </div>
+
+  <!-- Menu/Game music (one track; menu 100%, in‑game scaled lower) -->
+  <audio id="menuMusic" src="assets/K_k_mainmusic.mp3" preload="auto" loop></audio>
+
+  <!-- Reusable SFX -->
+  <audio id="kissSfx" src="assets/kiss.mp3" preload="auto"></audio>
+
+  <script src="game.js"></script>
+</body>
+</html>
